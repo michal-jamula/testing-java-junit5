@@ -1,8 +1,11 @@
 package guru.springframework.sfgpetclinic.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,5 +32,23 @@ class IndexControllerTest {
     void oopsHandler() {
         //assertTrue("notimplemented".equals(controller.oopsHandler()), () -> "Lambdas are expensive to create an error message. OupsHandler failed");
         assertThrows(ValueNotFoundException.class, () -> controller.oopsHandler());
+    }
+
+    @Disabled(value = "Just an example designed to fail")
+    @Test
+    void testTimeOut() {
+        //Runs the method as long as it takes, then performs the assertion. Doesn't spawn a second thread
+        assertTimeout(Duration.ofMillis(100), () -> Thread.sleep(2000));
+
+        System.out.println("I got here");
+    }
+
+    @Disabled(value = "another example designed to fail")
+    @Test
+    void testTimeOutPrempt() {
+        //Once the duration is exceeded - it terminates your test early. The test runs in a different thread here.
+        assertTimeoutPreemptively(Duration.ofMillis(100), () -> Thread.sleep(2000));
+
+        System.out.println("I got to 123123123123");
     }
 }
