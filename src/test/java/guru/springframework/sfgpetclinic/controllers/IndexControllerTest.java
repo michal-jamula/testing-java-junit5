@@ -1,6 +1,5 @@
 package guru.springframework.sfgpetclinic.controllers;
 
-import guru.springframework.sfgpetclinic.controllers.IndexController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,8 @@ class IndexControllerTest {
 
     @Test
     @DisplayName("Test exceptions")
-    void oupsHandler() {
-        assertTrue("notimplemented".equals(controller.oupsHandler()), () -> "Lambdas are expensive to create an error message. OupsHandler failed");
+    void oopsHandler() {
+        //assertTrue("notimplemented".equals(controller.oopsHandler()), () -> "Lambdas are expensive to create an error message. OupsHandler failed");
+        assertThrows(ValueNotFoundException.class, () -> controller.oopsHandler());
     }
 }
