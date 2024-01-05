@@ -34,21 +34,21 @@ class IndexControllerTest {
         assertThrows(ValueNotFoundException.class, () -> controller.oopsHandler());
     }
 
-    @Disabled(value = "Just an example designed to fail")
+    @Disabled(value = "Just an example of timeout tests - designed to fail")
     @Test
     void testTimeOut() {
         //Runs the method as long as it takes, then performs the assertion. Doesn't spawn a second thread
         assertTimeout(Duration.ofMillis(100), () -> Thread.sleep(2000));
 
-        System.out.println("I got here");
+        System.out.println("single threaded timeout got here");
     }
 
-    @Disabled(value = "another example designed to fail")
+    @Disabled(value = "Another example of a timeout test - designed to fail too")
     @Test
     void testTimeOutPrempt() {
         //Once the duration is exceeded - it terminates your test early. The test runs in a different thread here.
         assertTimeoutPreemptively(Duration.ofMillis(100), () -> Thread.sleep(2000));
 
-        System.out.println("I got to 123123123123");
+        System.out.println("pre-emptive timeout got here");
     }
 }
