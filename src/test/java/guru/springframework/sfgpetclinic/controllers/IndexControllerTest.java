@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class IndexControllerTest {
 
@@ -51,4 +52,12 @@ class IndexControllerTest {
 
         System.out.println("pre-emptive timeout got here");
     }
+
+    @Test
+    void testAssumptionTrue() {
+        //Failed assumption results in a test being aborted instead of failed - can be useful to check conditions (like the required data is resent)
+        assumeTrue("GURU".equalsIgnoreCase(System.getenv("GURU_RUNTIME")));
+    }
+
+
 }
