@@ -5,12 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 
 import java.sql.SQLOutput;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,6 +58,18 @@ class OwnerTest implements ModelTests {
     @ParameterizedTest(name = "{displayName} - [{index}] {arguments}")
     @CsvFileSource(resources = "/testInput.csv", numLinesToSkip = 1)
     void csvFileInputTest(String stateName, int val1, int val2) {
+    }
+
+    @DisplayName("Method Provider Test")
+    @ParameterizedTest(name = "{displayName} - [{index}] {arguments}")
+    @MethodSource("getArgs")
+    void fromMethodTest(String stateName, int val1, int val2) {
+    }
+
+    static Stream<Arguments> getArgs() {
+        return Stream.of(Arguments.of("FL", 5, 14),
+                Arguments.of("OH", 5, 8),
+                Arguments.of("MI", 9, 2));
     }
 
 
