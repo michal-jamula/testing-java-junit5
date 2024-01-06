@@ -18,14 +18,6 @@ class PersonTest implements ModelTests {
 
     }
 
-    @RepeatedTest(value = 10, name = "{displayName} : {currentRepetition} out of {totalRepetitions}")
-    @DisplayName("Repeated test spam")
-    void repeatMe() {
-        //todo
-    }
 
-    @RepeatedTest(5)
-    void myRepeatedTestWithDependencyInjection(TestInfo testInfo, RepetitionInfo repetitionInfo) {
-        System.out.printf("%s: %s\n", testInfo.getDisplayName(), repetitionInfo.getCurrentRepetition());
-    }
+
 }
