@@ -1,8 +1,11 @@
 package guru.springframework.sfgpetclinic.model;
 
 import guru.springframework.sfgpetclinic.ModelTests;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,6 +26,13 @@ class OwnerTest implements ModelTests {
                         () -> assertEquals("Key West", owner.getCity(), "City did not match"),
                         () -> assertEquals("123123123", owner.getTelephone(), "Telephone did not match"))
         );
+    }
+
+    @DisplayName("Value Source Test : ")
+    @ParameterizedTest
+    @ValueSource(strings = {"Spring", "Framework", "Guru"})
+    void testValueSource(String val) {
+        System.out.println(val);
     }
 
 }
