@@ -7,7 +7,7 @@ public interface ModelTests {
 
     @BeforeEach
     default void beforeEach(TestInfo testInfo) {
-        System.out.format("Running non-repetition model test named: {%s}\n", testInfo.getDisplayName());
+        System.out.format("Running model test named: {%s}\n", testInfo.getDisplayName());
     }
 
 }
