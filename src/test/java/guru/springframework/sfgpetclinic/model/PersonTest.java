@@ -1,6 +1,8 @@
 package guru.springframework.sfgpetclinic.model;
 
 import guru.springframework.sfgpetclinic.ModelTests;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -19,19 +21,9 @@ class PersonTest implements ModelTests {
 
     }
 
-    @Test
-    void getFirstName() {
-    }
-
-    @Test
-    void setFirstName() {
-    }
-
-    @Test
-    void getLastName() {
-    }
-
-    @Test
-    void setLastName() {
+    @RepeatedTest(value = 10, name = "{displayName} : {currentRepetition} out of {totalRepetitions}")
+    @DisplayName("Repeated test spam")
+    void repeatMe() {
+        //todo
     }
 }
