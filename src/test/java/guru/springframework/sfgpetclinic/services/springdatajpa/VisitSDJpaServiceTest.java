@@ -5,6 +5,7 @@ import guru.springframework.sfgpetclinic.repositories.VisitRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,14 +15,12 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("Visit SDJ Service Test - ")
+@DisplayName("Visit SDJ Service BDD Tests : ")
 class VisitSDJpaServiceTest {
     @Mock
     VisitRepository visitRepository;
@@ -29,58 +28,80 @@ class VisitSDJpaServiceTest {
     VisitSDJpaService service;
 
     @Test
-    @DisplayName("Find All")
+    @DisplayName("Test Should Find All Visits")
     void findAllTest() {
-
+        //given
         Set<Visit> visits = new HashSet<>();
         visits.add(new Visit());
         visits.add(new Visit());
+        given(visitRepository.findAll()).willReturn(visits);
 
-        when(visitRepository.findAll()).thenReturn(visits);
+        //when
+        var foundVisits = service.findAll();
 
-        Set<Visit> foundVisits = service.findAll();
+        //then
 
-        verify(visitRepository).findAll();
-
+        then(visitRepository).should().findAll();
+        then(visitRepository).shouldHaveNoMoreInteractions();
         assertThat(foundVisits).hasSize(2);
     }
 
     @Test
-    @DisplayName("Find By Id")
+    @DisplayName("Test Find Visit By ID")
     void findById() {
-        Visit visit = new Visit();
+        //given
+        given(visitRepository.findById(anyLong())).willReturn(Optional.of(new Visit()));
 
-        when(visitRepository.findById(anyLong())).thenReturn(Optional.of(visit));
+        //when
+        var foundVisit = service.findById(1L);
 
-        Visit foundVisit = service.findById(1L);
-
+        //then
+        then(visitRepository).should().findById(anyLong());
         assertThat(foundVisit).isNotNull();
-        verify(visitRepository).findById(anyLong());
     }
 
     @Test
-    @DisplayName("Save")
+    @DisplayName("Test Save Visit")
     void save() {
-        when(visitRepository.save(any(Visit.class))).thenReturn(new Visit());
-
+        //given
+        given(visitRepository.save(any(Visit.class))).willReturn(new Visit());
+        //when
         Visit savedVisit = service.save(new Visit());
-
-        verify(visitRepository).save(any(Visit.class));
+        //then
+        then(visitRepository).should().save(any(Visit.class));
+        assertThat(savedVisit).isNotNull();
     }
 
     @Test
-    @DisplayName("Delete")
+    @DisplayName("Test Delete Visit")
     void delete() {
+        //when
         service.delete(new Visit());
-
-        verify(visitRepository).delete(any(Visit.class));
+        //then
+        then(visitRepository).should().delete(any(Visit.class));
+        then(visitRepository).shouldHaveNoMoreInteractions();
     }
 
     @Test
-    @DisplayName("Delete By Id")
+    @DisplayName("Test Delete Visit By ID")
     void deleteById() {
+        //when
         service.deleteById(1L);
 
-        verify(visitRepository).deleteById(1L);
+        //then
+        then(visitRepository).should().deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("Test Multiple Delete Visit By ID")
+    void multipleDeleteById() {
+        //when
+        service.deleteById(1L);
+        service.deleteById(1L);
+        service.deleteById(1L);
+
+        //then
+        then(visitRepository).should(times(3)).deleteById(anyLong());
+        then(visitRepository).shouldHaveNoMoreInteractions();
     }
 }
