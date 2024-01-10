@@ -33,9 +33,9 @@ class SpecialitySDJpaServiceBDDTest {
         Set<Speciality> specialities = new HashSet<>();
         specialities.add(new Speciality());
         specialities.add(new Speciality());
+        given(specialtyRepository.findAll()).willReturn(specialities);
 
         //when
-        BDDMockito.when(specialtyRepository.findAll()).thenReturn(specialities);
         var foundSpecialities = service.findAll();
 
         //then
