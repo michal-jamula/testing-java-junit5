@@ -14,11 +14,12 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class SpecialitySDJpaServiceBDDTest {
@@ -91,5 +92,40 @@ class SpecialitySDJpaServiceBDDTest {
         service.deleteById(1L);
         //then
         then(specialtyRepository).should(times(2)).deleteById(anyLong());
+    }
+
+    @Test
+    //This method does not follow BDD style
+    void doThrow() {
+        BDDMockito.doThrow(new RuntimeException("Boom!")).when(specialtyRepository).delete(any());
+
+        assertThrows(RuntimeException.class,
+                () -> specialtyRepository.delete(new Speciality()));
+
+        verify(specialtyRepository).delete(any());
+    }
+
+    @Test
+    void testFindByIdThrows() {
+        //given
+        given(specialtyRepository.findById(1L)).willThrow(new RuntimeException("Boom!"));
+
+        //when
+        assertThrows(RuntimeException.class, () -> service.findById(1L));
+
+        //then
+        then(specialtyRepository).should().findById(1L);
+    }
+
+    @Test
+    void testDeleteBDD() {
+        //given (this is used on a method that's meant to return void
+        willThrow(new RuntimeException("delete exception!")).given(specialtyRepository).delete(any());
+
+        //when
+        assertThrows(RuntimeException.class, () -> specialtyRepository.delete(new Speciality()));
+
+        //then
+        then(specialtyRepository).should().delete(any());
     }
 }
