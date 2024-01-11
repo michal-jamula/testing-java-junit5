@@ -25,6 +25,8 @@ class OwnerControllerTest {
     private static final String REDIRECT_OWNERS_5 = "redirect:/owners/5";
     @Mock
     OwnerService ownerService;
+    @Mock
+    Model model;
     @InjectMocks
     OwnerController controller;
     @Mock
@@ -89,13 +91,18 @@ class OwnerControllerTest {
     void processFindFormWildcardStringFound() {
         //given
         Owner owner = new Owner(1L, "Daniel", "FindMe");
+        InOrder inOrder = inOrder(ownerService, model);
 
         //when
-        String viewName = controller.processFindForm(owner, bindingResult, mock(Model.class));
+        String viewName = controller.processFindForm(owner, bindingResult, model);
 
         //then
         assertThat("%FindMe%").isEqualToIgnoringCase(stringArgumentCaptor.getValue());
         assertThat("owners/ownersList").isEqualToIgnoringCase(viewName);
+
+        //inOrder assertions
+        inOrder.verify(ownerService).findAllByLastNameLike(anyString());
+        inOrder.verify(model).addAttribute(anyString(), anyList());
     }
 
 
