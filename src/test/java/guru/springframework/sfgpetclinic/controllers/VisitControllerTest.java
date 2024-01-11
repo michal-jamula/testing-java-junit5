@@ -68,12 +68,12 @@ public class VisitControllerTest {
         given(petService.findById(anyLong())).willReturn(pet2);
 
         //when
-        Visit visit = visitController.loadPetWithVisit(12L, model);
+        Visit visit = visitController.loadPetWithVisit(2L, model);
 
         //then
         assertThat(visit).isNotNull();
         assertThat(visit.getPet()).isNotNull();
-        assertThat(visit.getPet().getId()).isEqualTo(12L);
+        assertThat(visit.getPet().getId()).isEqualTo(2L);
         verify(petService, times(1)).findById(anyLong());
     }
 }
